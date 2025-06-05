@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const App = () => {
     const [expenses, setExpenses] = useState([]);
@@ -8,8 +11,9 @@ const App = () => {
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [customCategory, setCustomCategory] = useState('');
-    const [type, setType] = useState('expense'); // default to 'expense'
-    const [date, setDate] = useState(''); // Date state
+    const [type, setType] = useState('expense');
+    const [date, setDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const categories = ['Food', 'Travel', 'Shopping', 'Bills', 'Salary', 'Investment'];
 
@@ -26,12 +30,12 @@ const App = () => {
         e.preventDefault();
         const selectedCategory = category === 'Other' ? customCategory : category;
 
-        const res = await axios.post('http://localhost:5000/api/expenses', { 
-            title, 
-            amount, 
-            category: selectedCategory, 
-            type, 
-            date  // Include date
+        const res = await axios.post('http://localhost:5000/api/expenses', {
+            title,
+            amount,
+            category: selectedCategory,
+            type,
+            date: selectedDate
         });
 
         setExpenses([...expenses, res.data]);
@@ -39,7 +43,6 @@ const App = () => {
         setAmount('');
         setCategory('');
         setCustomCategory('');
-        setDate('');
     };
 
     const deleteExpense = async (id) => {
@@ -47,90 +50,117 @@ const App = () => {
         setExpenses(expenses.filter(expense => expense._id !== id));
     };
 
-    const filterByType = (type) => {
-        return expenses.filter(expense => expense.type === type);
+    const filterByTypeAndDate = (type) => {
+        if (!selectedDate) return [];
+        return expenses.filter(exp => {
+            const expDate = new Date(exp.date);
+            return exp.type === type && expDate.toDateString() === new Date(selectedDate).toDateString();
+        });
+    };
+
+    const chartData = () => {
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const monthlyExpenses = expenses.filter(exp => {
+            const expDate = new Date(exp.date);
+            return expDate.getMonth() === month && expDate.getFullYear() === year && exp.type === 'expense';
+        });
+
+        const data = {};
+        monthlyExpenses.forEach(exp => {
+            data[exp.category] = (data[exp.category] || 0) + parseFloat(exp.amount);
+        });
+
+        return Object.entries(data).map(([key, value]) => ({ category: key, amount: value }));
     };
 
     return (
         <div className="app">
-            <div className="form-section">
-                <h1>Add {type === 'income' ? 'Income' : 'Expense'}</h1>
+            <div className="calendar-wrapper">
+                <h2>Select Date</h2>
+                <Calendar onChange={setSelectedDate} value={selectedDate} className="calendar" />
+            </div>
 
-                <form onSubmit={addExpense}>
-                    <input 
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <input 
-                        type="number"
-                        placeholder="Amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                    />
-
-                    {/* Transaction Type: Expense or Income */}
-                    <select value={type} onChange={(e) => setType(e.target.value)}>
-                        <option value="expense">Expense</option>
-                        <option value="income">Income</option>
-                    </select>
-
-                    {/* Predefined Categories */}
-                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">Select Category</option>
-                        {categories.map(cat => (
-                            <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                        <option value="Other">Other</option>
-                    </select>
-
-                    {/* Custom Category Input */}
-                    {category === 'Other' && (
+            {selectedDate && (
+                <div className="form-container">
+                    <h1>Add {type === 'income' ? 'Income' : 'Expense'}</h1>
+                    <form onSubmit={addExpense}>
                         <input
                             type="text"
-                            placeholder="Custom Category"
-                            value={customCategory}
-                            onChange={(e) => setCustomCategory(e.target.value)}
+                            placeholder="Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
-                    )}
+                        <input
+                            type="number"
+                            placeholder="Amount"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+                        <select value={type} onChange={(e) => setType(e.target.value)}>
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select Category</option>
+                            {categories.map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                            <option value="Other">Other</option>
+                        </select>
+                        {category === 'Other' && (
+                            <input
+                                type="text"
+                                placeholder="Custom Category"
+                                value={customCategory}
+                                onChange={(e) => setCustomCategory(e.target.value)}
+                            />
+                        )}
+                        <button type="submit">Add {type === 'income' ? 'Income' : 'Expense'}</button>
+                    </form>
 
-                    {/* Date Input */}
-                    <input 
-                        type="date" 
-                        value={date} 
-                        onChange={(e) => setDate(e.target.value)} 
-                    />
+                    <div className="lists">
+                        <div className="list-section">
+                            <h2>Expenses</h2>
+                            <ul>
+                                {filterByTypeAndDate('expense').map(expense => (
+                                    <li key={expense._id}>
+                                        {expense.title} - ₹{expense.amount} - {expense.category}
+                                        <button onClick={() => deleteExpense(expense._id)}>Delete</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="list-section">
+                            <h2>Incomes</h2>
+                            <ul>
+                                {filterByTypeAndDate('income').map(income => (
+                                    <li key={income._id}>
+                                        {income.title} - ₹{income.amount} - {income.category}
+                                        <button onClick={() => deleteExpense(income._id)}>Delete</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                    <button type="submit">Add {type === 'income' ? 'Income' : 'Expense'}</button>
-                </form>
-            </div>
-
-            <div className="expense-section">
-                <h2>Expenses</h2>
-                <ul>
-                    {filterByType('expense').map(expense => (
-                        <li key={expense._id}>
-                            {expense.title} - ₹{expense.amount} - {new Date(expense.date).toLocaleDateString()} - {expense.category}
-                            <button onClick={() => deleteExpense(expense._id)}>Delete</button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="income-section">
-                <h2>Incomes</h2>
-                <ul>
-                    {filterByType('income').map(income => (
-                        <li key={income._id}>
-                            {income.title} - ₹{income.amount} - {new Date(income.date).toLocaleDateString()} - {income.category}
-                            <button onClick={() => deleteExpense(income._id)}>Delete</button>
-                        </li>
-                    ))}
-                </ul>
+            <div className="chart-section">
+                <h2>Monthly Expense Chart</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData()}>
+                        <XAxis dataKey="category" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="amount" fill="#8884d8" />
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );
 };
 
 export default App;
+
