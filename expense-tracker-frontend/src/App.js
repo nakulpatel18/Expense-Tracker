@@ -12,8 +12,7 @@ const App = () => {
     const [category, setCategory] = useState('');
     const [customCategory, setCustomCategory] = useState('');
     const [type, setType] = useState('expense');
-    const [date, setDate] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const categories = ['Food', 'Travel', 'Shopping', 'Bills', 'Salary', 'Investment'];
 
@@ -22,67 +21,99 @@ const App = () => {
     }, []);
 
     const fetchExpenses = async () => {
-        const res = await axios.get('http://localhost:5000/api/expenses');
-        setExpenses(res.data);
+        try {
+            const res = await axios.get('http://localhost:5000/api/expenses');
+            setExpenses(res.data);
+        } catch (err) {
+            console.error('Error fetching expenses:', err);
+        }
     };
 
     const addExpense = async (e) => {
         e.preventDefault();
+        if (!title || !amount || !selectedDate || (!category && !customCategory)) {
+            alert('Please fill in all fields');
+            return;
+        }
+
         const selectedCategory = category === 'Other' ? customCategory : category;
 
-        const res = await axios.post('http://localhost:5000/api/expenses', {
-            title,
-            amount,
-            category: selectedCategory,
-            type,
-            date: selectedDate
-        });
+        try {
+            const res = await axios.post('http://localhost:5000/api/expenses', {
+                title,
+                amount,
+                category: selectedCategory,
+                type,
+                date: selectedDate,
+            });
 
-        setExpenses([...expenses, res.data]);
-        setTitle('');
-        setAmount('');
-        setCategory('');
-        setCustomCategory('');
+            setExpenses([...expenses, res.data]);
+            setTitle('');
+            setAmount('');
+            setCategory('');
+            setCustomCategory('');
+        } catch (err) {
+            console.error('Error adding expense:', err);
+        }
     };
 
     const deleteExpense = async (id) => {
-        await axios.delete(`http://localhost:5000/api/expenses/${id}`);
-        setExpenses(expenses.filter(expense => expense._id !== id));
+        try {
+            await axios.delete(`http://localhost:5000/api/expenses/${id}`);
+            setExpenses(expenses.filter((exp) => exp._id !== id));
+        } catch (err) {
+            console.error('Error deleting expense:', err);
+        }
     };
 
     const filterByTypeAndDate = (type) => {
         if (!selectedDate) return [];
-        return expenses.filter(exp => {
+        return expenses.filter((exp) => {
             const expDate = new Date(exp.date);
-            return exp.type === type && expDate.toDateString() === new Date(selectedDate).toDateString();
+            return (
+                exp.type === type &&
+                expDate.toDateString() === new Date(selectedDate).toDateString()
+            );
         });
     };
 
     const chartData = () => {
         const month = new Date().getMonth();
         const year = new Date().getFullYear();
-        const monthlyExpenses = expenses.filter(exp => {
+
+        const monthlyExpenses = expenses.filter((exp) => {
             const expDate = new Date(exp.date);
-            return expDate.getMonth() === month && expDate.getFullYear() === year && exp.type === 'expense';
+            return (
+                expDate.getMonth() === month &&
+                expDate.getFullYear() === year &&
+                exp.type === 'expense'
+            );
         });
 
         const data = {};
-        monthlyExpenses.forEach(exp => {
+        monthlyExpenses.forEach((exp) => {
             data[exp.category] = (data[exp.category] || 0) + parseFloat(exp.amount);
         });
 
-        return Object.entries(data).map(([key, value]) => ({ category: key, amount: value }));
+        return Object.entries(data).map(([key, value]) => ({
+            category: key,
+            amount: value,
+        }));
     };
 
     return (
-        <div className="app">
+        <div>
             <div className="calendar-wrapper">
                 <h2>Select Date</h2>
-                <Calendar onChange={setSelectedDate} value={selectedDate} className="calendar" />
+                <Calendar
+                    onChange={setSelectedDate}
+                    value={selectedDate}
+                    className="react-calendar"
+                />
             </div>
 
             {selectedDate && (
-                <div className="form-container">
+                <div className="form-section">
                     <h1>Add {type === 'income' ? 'Income' : 'Expense'}</h1>
                     <form onSubmit={addExpense}>
                         <input
@@ -103,8 +134,10 @@ const App = () => {
                         </select>
                         <select value={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="">Select Category</option>
-                            {categories.map(cat => (
-                                <option key={cat} value={cat}>{cat}</option>
+                            {categories.map((cat) => (
+                                <option key={cat} value={cat}>
+                                    {cat}
+                                </option>
                             ))}
                             <option value="Other">Other</option>
                         </select>
@@ -123,7 +156,7 @@ const App = () => {
                         <div className="list-section">
                             <h2>Expenses</h2>
                             <ul>
-                                {filterByTypeAndDate('expense').map(expense => (
+                                {filterByTypeAndDate('expense').map((expense) => (
                                     <li key={expense._id}>
                                         {expense.title} - ₹{expense.amount} - {expense.category}
                                         <button onClick={() => deleteExpense(expense._id)}>Delete</button>
@@ -134,7 +167,7 @@ const App = () => {
                         <div className="list-section">
                             <h2>Incomes</h2>
                             <ul>
-                                {filterByTypeAndDate('income').map(income => (
+                                {filterByTypeAndDate('income').map((income) => (
                                     <li key={income._id}>
                                         {income.title} - ₹{income.amount} - {income.category}
                                         <button onClick={() => deleteExpense(income._id)}>Delete</button>
@@ -163,4 +196,3 @@ const App = () => {
 };
 
 export default App;
-
