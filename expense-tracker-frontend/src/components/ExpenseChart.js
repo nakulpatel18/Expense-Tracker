@@ -17,3 +17,4 @@ const ExpenseChart = ({ chartData }) => (
 );
 
 export default ExpenseChart;
+
