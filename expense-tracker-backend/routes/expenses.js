@@ -42,19 +42,15 @@ router.put('/:id', async (req, res) => {
                 amount: req.body.amount,
                 category: req.body.category,
                 type: req.body.type,
-                date: new Date(req.body.date)  // 🔥 Force conversion to real JS Date
+                date: new Date(req.body.date)
             },
             { new: true }
         );
-        console.log("Updated expense:", updatedExpense);
         res.json(updatedExpense);
     } catch (err) {
-        console.error("Update error:", err);
         res.status(400).json({ message: err.message });
     }
 });
-
-
 
 // Delete an expense
 router.delete('/:id', async (req, res) => {

@@ -36,6 +36,15 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
         onSubmit({ title, amount, category: selectedCategory, type, date });
     };
 
+    // ✅ Safe local date string for input[type="date"]
+    const getLocalDateString = (date) => {
+        return date
+            ? new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                .toISOString()
+                .split('T')[0]
+            : '';
+    };
+
     return (
         <div className="form-section">
             <h1>{editingItem ? 'Edit Entry' : `Add ${type === 'income' ? 'Income' : 'Expense'}`}</h1>
@@ -54,7 +63,7 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
                 />
                 <input
                     type="date"
-                    value={new Date(date).toISOString().split('T')[0]}
+                    value={getLocalDateString(date)}
                     onChange={(e) => setDate(new Date(e.target.value))}
                 />
                 <select value={type} onChange={(e) => setType(e.target.value)}>
@@ -64,7 +73,9 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                     <option value="">Select Category</option>
                     {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
                     ))}
                     <option value="Other">Other</option>
                 </select>
@@ -76,7 +87,9 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
                         onChange={(e) => setCustomCategory(e.target.value)}
                     />
                 )}
-                <button type="submit">{editingItem ? 'Update' : `Add ${type === 'income' ? 'Income' : 'Expense'}`}</button>
+                <button type="submit">
+                    {editingItem ? 'Update' : `Add ${type === 'income' ? 'Income' : 'Expense'}`}
+                </button>
                 {editingItem && <button type="button" onClick={clearEdit}>Cancel</button>}
             </form>
         </div>
@@ -84,3 +97,4 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
 };
 
 export default ExpenseForm;
+
