@@ -114,33 +114,51 @@ const App = () => {
 
     return (
         <div>
-            <CalendarSelector
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                setActiveMonthDate={setActiveMonthDate}
-            />
+            
+            <header className="app-header">
+                <h1>Expense Tracker</h1>
+            </header>
 
-            <div ref={formRef}>
-                <ExpenseForm
-                    onSubmit={addOrUpdateExpense}
-                    selectedDate={selectedDate}
-                    categories={categories}
-                    editingItem={editingItem}
-                    clearEdit={() => setEditingItem(null)}
-                />
+            <div className="dashboard-container">
+                
+                <div className="left-panel">
+                    <CalendarSelector
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        setActiveMonthDate={setActiveMonthDate}
+                    />
+                    
+                    <div ref={formRef}>
+                        <ExpenseForm
+                            onSubmit={addOrUpdateExpense}
+                            selectedDate={selectedDate}
+                            categories={categories}
+                            editingItem={editingItem}
+                            clearEdit={() => setEditingItem(null)}
+                        />
+                    </div>
+                </div>
+
+                <div className="right-panel">
+                    <div className="lists"> 
+                        <ExpenseList expenses={filterByTypeAndDate('expense')} onEdit={startEditing} onDelete={deleteExpense} />
+                        <IncomeList incomes={filterByTypeAndDate('income')} onEdit={startEditing} onDelete={deleteExpense} />
+                    </div>
+
+                    <div className="summary-wrapper"> 
+                        <div className="summary">
+                            <div>Total Income (Monthly): ₹{monthlySummary('income')}</div>
+                            <div>Total Expense (Monthly): ₹{monthlySummary('expense')}</div>
+                        </div>
+                    </div>
+
+                    <ExpenseChart chartData={chartData()} /> 
+                </div>
             </div>
 
-            <div className="summary">
-                <div>Total Income (Monthly): ₹{monthlySummary('income')}</div>
-                <div>Total Expense (Monthly): ₹{monthlySummary('expense')}</div>
-            </div>
-
-            <div className="lists">
-                <ExpenseList expenses={filterByTypeAndDate('expense')} onEdit={startEditing} onDelete={deleteExpense} />
-                <IncomeList incomes={filterByTypeAndDate('income')} onEdit={startEditing} onDelete={deleteExpense} />
-            </div>
-
-            <ExpenseChart chartData={chartData()} />
+            <footer className="app-footer">
+                <p>&copy; {new Date().getFullYear()} Expense Tracker. All rights reserved.</p>
+            </footer>
         </div>
     );
 };

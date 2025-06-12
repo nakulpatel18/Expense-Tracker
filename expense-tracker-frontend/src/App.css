@@ -3,27 +3,76 @@ body {
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f1f2f6;
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column; 
 }
 
 h2 {
     text-align: center;
     color: #2f3542;
-    margin-top: 30px;
+    margin-top: 20px; 
+}
+
+/* Header Styles */
+.app-header {
+    background-color: #2f3542;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Space below header */
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+/* Main Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+    align-items: flex-start; 
+    flex-grow: 1; 
+}
+
+.left-panel {
+    flex: 1; 
+    min-width: 380px; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-panel {
+    flex: 2; 
+    min-width: 500px; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .calendar-wrapper {
-    max-width: 400px;
-    margin: 30px auto;
+    max-width: 400px; 
+    margin: 0; 
     text-align: center;
+    background-color: #fff; 
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px; 
 }
 
 .react-calendar {
     width: 100% !important;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 12px;
     padding: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .react-calendar__navigation {
@@ -80,8 +129,8 @@ h2 {
 }
 
 .form-section {
-    max-width: 500px;
-    margin: 20px auto;
+    max-width: 500px; 
+    margin: 0; 
     padding: 20px;
     background-color: white;
     border-radius: 12px;
@@ -100,7 +149,7 @@ h2 {
     border: 1px solid #ccc;
     background-color: white;
     font-size: 1rem;
-    width: 95%;
+    width: 95%; 
 }
 
 .form-section select {
@@ -127,15 +176,17 @@ h2 {
     background-color: #28c76f;
 }
 
-.summary {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 12px 20px;
+.summary-wrapper {
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 12px 20px;
+    margin-top: 10px; 
+}
+
+.summary {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     font-weight: bold;
     font-size: 1rem;
     color: #2f3542;
@@ -145,8 +196,8 @@ h2 {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    margin: 20px;
     flex-wrap: wrap;
+    margin: 0; 
 }
 
 .list-section {
@@ -199,10 +250,23 @@ h2 {
 }
 
 .chart-section {
-    max-width: 800px;
-    margin: 40px auto;
+    margin: 0 auto; 
     padding: 20px;
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styles */
+.app-footer {
+    background-color: #2f3542;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+}
+
+.app-footer p {
+    margin: 0;
+    font-size: 0.9rem;
 }
