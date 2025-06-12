@@ -1,97 +1,135 @@
 # 💰 Expense Tracker App (MERN Stack)
 
-A modern Expense and Income Tracking application built with the **MERN stack** (MongoDB, Express, React, Node.js). The app allows users to:
-
-- Add and categorize expenses or incomes
-- Track transactions date-wise
-- View expenses and incomes separately
-- Use predefined or custom categories
-- Enjoy a clean and responsive UI divided into 3 sections
+A modern and responsive Expense & Income Tracking application built using the **MERN Stack** (MongoDB, Express, React, Node.js). This app helps users manage their finances efficiently by tracking daily incomes and expenses with categorized data and visual insights.
 
 ---
 
-## 📸 Preview
+## ✨ Features
 
-![App Preview](./preview.png)
+- ✅ Add both **income** and **expense** entries
+- 📆 Assign a **date** to each transaction
+- 🗂️ Use **predefined** or **custom categories**
+- 🔍 View **incomes and expenses separately**
+- 📊 Visualize monthly expense summary via **bar chart**
+- 📅 Filter transactions based on **calendar date**
+- 🧾 **Edit** or **delete** existing entries
+- 💡 Clean, intuitive, and **responsive** UI layout
 
 ---
 
 ## 🛠 Tech Stack
 
-| Tech         | Description                    |
-|--------------|--------------------------------|
-| React        | Frontend framework             |
-| Node.js      | JavaScript runtime             |
-| Express.js   | Backend framework              |
-| MongoDB      | NoSQL database                 |
-| Axios        | API requests                   |
-| CSS Flexbox  | Responsive layout styling      |
+| Tech           | Description                 |
+|----------------|-----------------------------|
+| React          | Frontend framework          |
+| Node.js        | JavaScript runtime          |
+| Express.js     | Backend framework           |
+| MongoDB        | NoSQL database              |
+| Axios          | For API requests            |
+| Recharts       | Chart rendering library     |
+| React Calendar | Date selection UI           |
+| CSS Flexbox    | Responsive layout styling   |
 
 ---
 
-## 🚀 Features
+## 📁 Folder Structure
 
-- 🧾 Add income or expense entries
-- 🗃️ Choose from predefined categories or add your own
-- 📅 Attach a date to every transaction
-- 📊 View expenses & incomes listed separately, date-wise
-- 🧱 Structured layout with left, middle, and right panels
-- 🧹 Clean and intuitive UI
-
----
-
-## 📁 Project Structure
-
-```bash
-.
-├── client               # React frontend
-│   ├── public
-│   └── src
+```
+expense-tracker/
+├── expense-tracker-frontend/                  # React Frontend
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   ├── CalendarSelector.js
+│       │   ├── ExpenseForm.js
+│       │   ├── ExpenseList.js
+│       │   ├── IncomeList.js
+│       │   └── ExpenseChart.js
 │       ├── App.js
 │       ├── App.css
 │       └── index.js
-├── server               # Node/Express backend
-│   ├── models
+│
+├── expense-tracker-backend/                  # Express Backend
+│   ├── models/
 │   │   └── Expense.js
-│   ├── routes
+│   ├── routes/
 │   │   └── expenses.js
 │   ├── server.js
 │   └── .env
-├── README.md
-└── package.json
+│
+├── package.json
+└── README.md
+```
 
-🔧 Installation & Setup
-1. Clone the repository
-bash
-Copy code
-git clone https://github.com/yourusername/mern-expense-tracker.git
-cd mern-expense-tracker
+---
 
-2. Setup Backend (Node/Express)
-bash
-Copy code
-cd server
+## 🚀 Getting Started
+
+### ✅ Prerequisites
+
+- Node.js & npm
+- MongoDB (cloud or local)
+
+---
+
+### 📥 Clone the Repository
+
+```bash
+git clone https://github.com/nakulpatel18/Expense-Tracker.git
+cd Expense-Tracker
+```
+
+---
+
+### ⚙️ Backend Setup
+
+```bash
+cd expense-tracker-backend
 npm install
-Create a .env file in the /server directory:
-env
-Copy code
+```
+
+Create a `.env` file inside the `/expense-tracker-backend` folder:
+
+```env
 PORT=5000
 MONGO_URI=your_mongo_connection_string
-Then run the server:
+```
 
-bash
-Copy code
+Start the backend server:
+
+```bash
 npm start
+```
 
-3. Setup Frontend (React)
-bash
-Copy code
-cd client
+---
+
+### 🎨 Frontend Setup
+
+```bash
+cd expense-tracker-frontend
 npm install
 npm start
+```
 
-📬 API Endpoints
-Method	Endpoint	        Description
-GET	    /api/expenses	    Get all transactions
-POST	/api/expenses	    Add new expense/income
-DELETE	/api/expenses/:id	Delete a transaction
+The frontend will start at `http://localhost:3000` and the backend at `http://localhost:5000`.
+
+---
+
+## 📌 Usage Instructions
+
+1. Start both the **frontend** and **backend** servers.
+2. Select a date using the calendar.
+3. Add income or expense with title, amount, category, and date.
+4. Edit or delete any entry using the respective buttons.
+5. View the **monthly summary** and **category-wise expense chart**.
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint             | Description                 |
+|--------|----------------------|-----------------------------|
+| GET    | `/api/expenses`      | Fetch all transactions      |
+| POST   | `/api/expenses`      | Add a new income/expense    |
+| PUT    | `/api/expenses/:id`  | Update an entry             |
+| DELETE | `/api/expenses/:id`  | Delete a transaction        |
