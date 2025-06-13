@@ -14,8 +14,6 @@ const App = () => {
     const [editingItem, setEditingItem] = useState(null);
     const formRef = useRef(null);
 
-    const categories = ['Food', 'Travel', 'Shopping', 'Bills', 'Salary', 'Investment'];
-
     useEffect(() => {
         fetchExpenses();
     }, []);
@@ -114,48 +112,48 @@ const App = () => {
 
     return (
         <div>
-            
+            {/* Header (App Title) */}
             <header className="app-header">
                 <h1>Expense Tracker</h1>
             </header>
 
             <div className="dashboard-container">
-                
+                {/* Left Panel: Calendar */}
                 <div className="left-panel">
                     <CalendarSelector
                         selectedDate={selectedDate}
                         setSelectedDate={setSelectedDate}
                         setActiveMonthDate={setActiveMonthDate}
                     />
-                    
                     <div ref={formRef}>
                         <ExpenseForm
                             onSubmit={addOrUpdateExpense}
                             selectedDate={selectedDate}
-                            categories={categories}
                             editingItem={editingItem}
                             clearEdit={() => setEditingItem(null)}
                         />
                     </div>
                 </div>
 
+                {/* Right Panel: Lists, Summary, Chart */}
                 <div className="right-panel">
-                    <div className="lists"> 
+                    <div className="lists">
                         <ExpenseList expenses={filterByTypeAndDate('expense')} onEdit={startEditing} onDelete={deleteExpense} />
                         <IncomeList incomes={filterByTypeAndDate('income')} onEdit={startEditing} onDelete={deleteExpense} />
                     </div>
 
-                    <div className="summary-wrapper"> 
+                    <div className="summary-wrapper">
                         <div className="summary">
                             <div>Total Income (Monthly): ₹{monthlySummary('income')}</div>
                             <div>Total Expense (Monthly): ₹{monthlySummary('expense')}</div>
                         </div>
                     </div>
 
-                    <ExpenseChart chartData={chartData()} /> 
+                    <ExpenseChart chartData={chartData()} />
                 </div>
             </div>
 
+            {/* Footer */}
             <footer className="app-footer">
                 <p>&copy; {new Date().getFullYear()} Expense Tracker. All rights reserved.</p>
             </footer>

@@ -1,30 +1,51 @@
 import React, { useEffect, useState } from 'react';
 
-const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdit }) => {
+const ExpenseForm = ({ onSubmit, selectedDate, editingItem, clearEdit }) => {
     const [title, setTitle] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [customCategory, setCustomCategory] = useState('');
-    const [type, setType] = useState('expense');
+    const [type, setType] = useState('expense'); // Default to expense for new entries
     const [date, setDate] = useState(selectedDate);
+
+    const expenseCategories = ['Food', 'Travel', 'Shopping', 'Bills', 'SIP', 'Auto', 'Entertainment', 'Health', 'General', 'Other'];
+    const incomeCategories = ['Salary', 'Investment', 'Savings', 'Previous Month', 'Rental Income', 'Gift', 'Other'];
+
+    const currentCategories = type === 'income' ? incomeCategories : expenseCategories;
 
     useEffect(() => {
         if (editingItem) {
             setTitle(editingItem.title);
             setAmount(editingItem.amount);
-            setCategory(categories.includes(editingItem.category) ? editingItem.category : 'Other');
-            setCustomCategory(categories.includes(editingItem.category) ? '' : editingItem.category);
             setType(editingItem.type);
             setDate(new Date(editingItem.date));
+
+            // Set category and custom category when editing an item
+            const itemCategories = editingItem.type === 'income' ? incomeCategories : expenseCategories;
+            if (itemCategories.includes(editingItem.category)) {
+                setCategory(editingItem.category);
+                setCustomCategory('');
+            } else {
+                setCategory('Other');
+                setCustomCategory(editingItem.category);
+            }
         } else {
+            // Reset form fields for a new entry
             setTitle('');
             setAmount('');
+            setDate(selectedDate);
             setCategory('');
             setCustomCategory('');
-            setType('expense');
-            setDate(selectedDate);
         }
     }, [editingItem, selectedDate]);
+
+    // Reset category and custom category when the type changes
+    useEffect(() => {
+        if (!editingItem || (editingItem && editingItem.type !== type)) {
+            setCategory('');
+            setCustomCategory('');
+        }
+    }, [type, editingItem]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,9 +55,16 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
         }
         const selectedCategory = category === 'Other' ? customCategory : category;
         onSubmit({ title, amount, category: selectedCategory, type, date });
+
+        // Reset the form state properly after submission
+        setTitle('');
+        setAmount('');
+        setCategory('');
+        setCustomCategory('');
+        setType('expense');
+        setDate(new Date()); // Reset to default date
     };
 
-    // ✅ Safe local date string for input[type="date"]
     const getLocalDateString = (date) => {
         return date
             ? new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -72,7 +100,7 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
                 </select>
                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                     <option value="">Select Category</option>
-                    {categories.map((cat) => (
+                    {currentCategories.filter(cat => cat !== 'Other').map((cat) => (
                         <option key={cat} value={cat}>
                             {cat}
                         </option>
@@ -97,4 +125,3 @@ const ExpenseForm = ({ onSubmit, selectedDate, categories, editingItem, clearEdi
 };
 
 export default ExpenseForm;
-
