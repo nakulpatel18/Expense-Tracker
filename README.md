@@ -1,19 +1,19 @@
 # 💰 Expense Tracker App (MERN Stack)
 
-A modern and responsive Expense & Income Tracking application built using the **MERN Stack** (MongoDB, Express, React, Node.js). This app helps users manage their finances efficiently by tracking daily incomes and expenses with categorized data and visual insights.
+A modern and user-friendly Expense & Income Tracking application built using the **MERN Stack** (MongoDB, Express, React, Node.js). It allows users to track day-to-day financial transactions categorized by type, view summaries, and gain insights through charts — all in a clean and responsive interface.
 
 ---
 
 ## ✨ Features
 
-- ✅ Add both **income** and **expense** entries
-- 📆 Assign a **date** to each transaction
-- 🗂️ Use **predefined** or **custom categories**
-- 🔍 View **incomes and expenses separately**
-- 📊 Visualize monthly expense summary via **bar chart**
-- 📅 Filter transactions based on **calendar date**
-- 🧾 **Edit** or **delete** existing entries
-- 💡 Clean, intuitive, and **responsive** UI layout
+- ✅ Add both **income** and **expense** transactions
+- 📅 Select transaction date via **calendar**
+- 🗃️ Use predefined or **custom categories**
+- 🔄 **Edit** or **delete** transactions
+- 🧮 View **daily** entries and **monthly summaries**
+- 📊 See **category-wise monthly expense charts**
+- 🧱 Responsive layout: Calendar, Form, Lists & Charts
+- 🦾 Clean dashboard UI with header and footer
 
 ---
 
@@ -25,17 +25,17 @@ A modern and responsive Expense & Income Tracking application built using the **
 | Node.js        | JavaScript runtime          |
 | Express.js     | Backend framework           |
 | MongoDB        | NoSQL database              |
-| Axios          | For API requests            |
-| Recharts       | Chart rendering library     |
-| React Calendar | Date selection UI           |
-| CSS Flexbox    | Responsive layout styling   |
+| Axios          | HTTP requests               |
+| Recharts       | Chart rendering             |
+| React Calendar | Calendar component          |
+| CSS Flexbox    | Layout styling              |
 
 ---
 
 ## 📁 Folder Structure
 
 ```
-expense-tracker/
+Expense-Tracker/
 ├── expense-tracker-frontend/                  # React Frontend
 │   ├── public/
 │   └── src/
@@ -49,7 +49,7 @@ expense-tracker/
 │       ├── App.css
 │       └── index.js
 │
-├── expense-tracker-backend/                  # Express Backend
+├── expense-tracker-backend/                  # Node + Express Backend
 │   ├── models/
 │   │   └── Expense.js
 │   ├── routes/
@@ -68,7 +68,7 @@ expense-tracker/
 ### ✅ Prerequisites
 
 - Node.js & npm
-- MongoDB (cloud or local)
+- MongoDB Atlas or Local MongoDB
 
 ---
 
@@ -76,7 +76,7 @@ expense-tracker/
 
 ```bash
 git clone https://github.com/nakulpatel18/Expense-Tracker.git
-cd Expense-Tracker
+cd expense-tracker
 ```
 
 ---
@@ -88,7 +88,7 @@ cd expense-tracker-backend
 npm install
 ```
 
-Create a `.env` file inside the `/expense-tracker-backend` folder:
+Create a `.env` file in the `expense-tracker-backend` directory:
 
 ```env
 PORT=5000
@@ -111,17 +111,20 @@ npm install
 npm start
 ```
 
-The frontend will start at `http://localhost:3000` and the backend at `http://localhost:5000`.
+Frontend runs at `http://localhost:3000`  
+Backend runs at `http://localhost:5000`
 
 ---
 
-## 📌 Usage Instructions
+## 🧑‍💻 Usage Instructions
 
-1. Start both the **frontend** and **backend** servers.
-2. Select a date using the calendar.
-3. Add income or expense with title, amount, category, and date.
-4. Edit or delete any entry using the respective buttons.
-5. View the **monthly summary** and **category-wise expense chart**.
+1. Start the backend and frontend servers.
+2. Use the **calendar** to select a specific date.
+3. Fill out the **form** to add a new income or expense.
+4. Choose a category or add a **custom category** if needed.
+5. View your **daily entries** and **monthly summaries**.
+6. Use **Edit** and **Delete** to manage your entries.
+7. Visual insights appear through a **monthly expense bar chart**.
 
 ---
 
@@ -130,6 +133,6 @@ The frontend will start at `http://localhost:3000` and the backend at `http://lo
 | Method | Endpoint             | Description                 |
 |--------|----------------------|-----------------------------|
 | GET    | `/api/expenses`      | Fetch all transactions      |
-| POST   | `/api/expenses`      | Add a new income/expense    |
-| PUT    | `/api/expenses/:id`  | Update an entry             |
-| DELETE | `/api/expenses/:id`  | Delete a transaction        |
+| POST   | `/api/expenses`      | Add a new entry             |
+| PUT    | `/api/expenses/:id`  | Update an existing entry    |
+| DELETE | `/api/expenses/:id`  | Delete an entry             |
