@@ -2,12 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const expenseRoutes = require('./routes/expenses');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Use expense routes
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -19,9 +24,6 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error('MongoDB connection error:', err);
 });
 
-// Use expense routes
-const expenseRoutes = require('./routes/expenses');
-app.use('/api/expenses', expenseRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

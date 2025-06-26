@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f1f2f6;
+    background-color: #f3f4f6;
     min-height: 100vh; 
     display: flex;
     flex-direction: column; 
@@ -258,15 +258,71 @@ h2 {
 }
 
 /* Footer Styles */
-.app-footer {
+/* .app-footer {
     background-color: #2f3542;
     color: white;
     text-align: center;
     padding: 15px 0;
     margin-top: 30px;
-}
+} */
 
 .app-footer p {
     margin: 0;
     font-size: 0.9rem;
 }
+
+/* Layout wrapper to push footer to bottom */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header bar
+.app-header {
+    background-color: #2f3542;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+} */
+
+/* Navigation styling */
+.app-header nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Links and logout button */
+.app-header a,
+.app-header button {
+    color: #f1f2f6;
+    text-decoration: none;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.app-header a:hover,
+.app-header button:hover {
+    text-decoration: underline;
+}
+
+/* Content area grows to push footer */
+.app-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f1f2f6;
+}
+
+/* Footer */
+.app-footer {
+    background-color: #2f3542;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
