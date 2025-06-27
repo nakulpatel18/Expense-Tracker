@@ -6,29 +6,32 @@ A modern and user-friendly Expense & Income Tracking application built using the
 
 ## ✨ Features
 
-- ✅ Add both **income** and **expense** transactions
-- 📅 Select transaction date via **calendar**
-- 🗃️ Use predefined or **custom categories**
-- 🔄 **Edit** or **delete** transactions
-- 🧮 View **daily** entries and **monthly summaries**
-- 📊 See **category-wise monthly expense charts**
-- 🧱 Responsive layout: Calendar, Form, Lists & Charts
-- 🦾 Clean dashboard UI with header and footer
+- ✅ Add both **income** and **expense** transactions  
+- 📅 Select transaction date via **calendar**  
+- 🗃️ Use predefined or **custom categories**  
+- 🔄 **Edit** or **delete** transactions  
+- 🧮 View **daily** entries and **monthly summaries**  
+- 📊 See **category-wise monthly expense charts**  
+- 🧱 Responsive layout: Calendar, Form, Lists & Charts  
+- 🦾 Clean dashboard UI with header and footer  
+- 🔐 Login/Register authentication with token-based access  
 
 ---
 
 ## 🛠 Tech Stack
 
-| Tech           | Description                 |
-|----------------|-----------------------------|
-| React          | Frontend framework          |
-| Node.js        | JavaScript runtime          |
-| Express.js     | Backend framework           |
-| MongoDB        | NoSQL database              |
-| Axios          | HTTP requests               |
-| Recharts       | Chart rendering             |
-| React Calendar | Calendar component          |
-| CSS Flexbox    | Layout styling              |
+| Tech             | Description                        |
+|------------------|------------------------------------|
+| React            | Frontend framework                 |
+| Node.js          | JavaScript runtime                 |
+| Express.js       | Backend framework                  |
+| MongoDB          | NoSQL database                     |
+| Axios            | HTTP requests                      |
+| Recharts         | Chart rendering                    |
+| React Calendar   | Calendar component                 |
+| React Router DOM | Routing between pages              |
+| Bcrypt + JWT     | Secure authentication              |
+| CSS Flexbox/Grid | Layout styling                     |
 
 ---
 
@@ -36,26 +39,43 @@ A modern and user-friendly Expense & Income Tracking application built using the
 
 ```
 Expense-Tracker/
-├── expense-tracker-frontend/                  # React Frontend
+├── expense-tracker-backend/             # Node + Express Backend
+│   ├── controllers/
+│   │   └── authControllers.js
+│   ├── middleware/
+│   │   └── auth.middleware.js
+│   ├── models/
+│   │   ├── Expense.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── expenses.js
+│   ├── server.js
+│   └── .env
+│
+│
+├── expense-tracker-frontend/            # React Frontend
 │   ├── public/
 │   └── src/
+│       ├── api/
+│       │   └── api.js
 │       ├── components/
 │       │   ├── CalendarSelector.js
 │       │   ├── ExpenseForm.js
 │       │   ├── ExpenseList.js
 │       │   ├── IncomeList.js
 │       │   └── ExpenseChart.js
+│       ├── pages/
+│       │   ├── Dashboard.js
+│       │   ├── Landing.js
+│       │   ├── Login.js
+│       │   ├── Register.js
+│       │   ├── Landing.css
+│       │   ├── Login.css
+│       │   └── Register.css
 │       ├── App.js
-│       ├── App.css
-│       └── index.js
+│       └── App.css
 │
-├── expense-tracker-backend/                  # Node + Express Backend
-│   ├── models/
-│   │   └── Expense.js
-│   ├── routes/
-│   │   └── expenses.js
-│   ├── server.js
-│   └── .env
 │
 ├── package.json
 └── README.md
@@ -85,7 +105,7 @@ cd expense-tracker
 
 ```bash
 cd expense-tracker-backend
-npm install
+npm install express mongoose bcryptjs jsonwebtoken dotenv cors
 ```
 
 Create a `.env` file in the `expense-tracker-backend` directory:
@@ -107,7 +127,7 @@ npm start
 
 ```bash
 cd expense-tracker-frontend
-npm install
+npm install react-router-dom axios react-icons react-calendar recharts
 npm start
 ```
 
@@ -116,23 +136,41 @@ Backend runs at `http://localhost:5000`
 
 ---
 
-## 🧑‍💻 Usage Instructions
+🧑‍💻 Usage Instructions
 
-1. Start the backend and frontend servers.
-2. Use the **calendar** to select a specific date.
-3. Fill out the **form** to add a new income or expense.
-4. Choose a category or add a **custom category** if needed.
-5. View your **daily entries** and **monthly summaries**.
-6. Use **Edit** and **Delete** to manage your entries.
-7. Visual insights appear through a **monthly expense bar chart**.
+- Start both **backend** and **frontend** servers.
+- Open the app at `/` to explore the **Landing Page** features.
+- Click on the **Register** link to create a new account.
+- Log in using your registered **email** and **password**.
 
----
+### On the Dashboard:
+
+- 📅 Use the **calendar** to select a specific date.
+- 📝 Fill out the **form** to add an income or expense entry.
+- 🗃️ Choose a category or enter a **custom category**.
+- 📆 View **daily transactions** filtered by the selected date.
+- 📈 See **monthly summaries** for income and expenses.
+- ✏️ Use the **Edit** button to update a transaction.
+- ❌ Use the **Delete** button to remove a transaction.
+- 📊 Analyze your spending using the **monthly expense bar chart**.
+
+
 
 ## 📡 API Endpoints
 
-| Method | Endpoint             | Description                 |
-|--------|----------------------|-----------------------------|
-| GET    | `/api/expenses`      | Fetch all transactions      |
-| POST   | `/api/expenses`      | Add a new entry             |
-| PUT    | `/api/expenses/:id`  | Update an existing entry    |
-| DELETE | `/api/expenses/:id`  | Delete an entry             |
+### 🔐 Authentication
+
+| Method | Endpoint             | Description           |
+|--------|----------------------|-----------------------|
+| POST   | /api/auth/register   | Register a new user   |
+| POST   | /api/auth/login      | Login and get token   |
+
+### 💵 Expense/Income
+
+| Method | Endpoint              | Description              |
+|--------|-----------------------|--------------------------|
+| GET    | /api/expenses         | Fetch all transactions   |
+| POST   | /api/expenses         | Add a new transaction    |
+| PUT    | /api/expenses/:id     | Update a transaction     |
+| DELETE | /api/expenses/:id     | Delete a transaction     |
+
