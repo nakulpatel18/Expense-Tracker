@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
+import api from '../api/api';
 import CalendarSelector from '../components/CalendarSelector';
 import ExpenseForm from '../components/ExpenseForm';
 import ExpenseList from '../components/ExpenseList';
 import IncomeList from '../components/IncomeList';
 import ExpenseChart from '../components/ExpenseChart';
-import '../App.css'
+import '../App.css';
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
@@ -13,14 +13,21 @@ function Dashboard() {
     const [activeMonthDate, setActiveMonthDate] = useState(new Date());
     const [editingItem, setEditingItem] = useState(null);
     const formRef = useRef(null);
+
     const fetchExpenses = async () => {
         try {
-            const res = await axios.get('/api/expenses');
+            const res = await api.get('/expenses');
             setExpenses(res.data);
         } catch (err) {
             console.error('Error fetching expenses:', err);
+            // Handle unauthorized errors by redirecting to login
+            if (err.response && err.response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }
         }
     };
+
     useEffect(() => {
         fetchExpenses();
     }, []);
@@ -28,7 +35,7 @@ function Dashboard() {
     const addOrUpdateExpense = async (data) => {
         if (editingItem) {
             try {
-                const res = await axios.put(`/api/expenses/${editingItem._id}`, data);
+                const res = await api.put(`/expenses/${editingItem._id}`, data);
                 setExpenses(expenses.map((item) => (item._id === editingItem._id ? res.data : item)));
                 setEditingItem(null);
             } catch (err) {
@@ -36,7 +43,7 @@ function Dashboard() {
             }
         } else {
             try {
-                const res = await axios.post('/api/expenses', data);
+                const res = await api.post('/expenses', data);
                 setExpenses([...expenses, res.data]);
             } catch (err) {
                 console.error('Error adding expense:', err);
@@ -46,7 +53,7 @@ function Dashboard() {
 
     const deleteExpense = async (id) => {
         try {
-            await axios.delete(`/api/expenses/${id}`);
+            await api.delete(`/expenses/${id}`);
             setExpenses(expenses.filter((exp) => exp._id !== id));
         } catch (err) {
             console.error('Error deleting expense:', err);
@@ -109,9 +116,7 @@ function Dashboard() {
     };
 
     return (
-
         <div>
-            
             <div className="dashboard-container">
                 {/* Left Panel: Calendar */}
                 <div className="left-panel">
@@ -130,13 +135,12 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* Right Panel: Lists, Summary, Chart */}
                 <div className="right-panel">
                     <div className="lists">
                         <ExpenseList expenses={filterByTypeAndDate('expense')} onEdit={startEditing} onDelete={deleteExpense} />
                         <IncomeList incomes={filterByTypeAndDate('income')} onEdit={startEditing} onDelete={deleteExpense} />
                     </div>
-
+                    {/* Right Panel: Lists, Summary, Chart */}
                     <div className="summary-wrapper">
                         <div className="summary">
                             <div>Total Income (Monthly): ₹{monthlySummary('income')}</div>
@@ -147,10 +151,11 @@ function Dashboard() {
                     <ExpenseChart chartData={chartData()} />
                 </div>
             </div>
-
         </div>
-
-    )
+    );
 }
 
 export default Dashboard;
+
+
+
