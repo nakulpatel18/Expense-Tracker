@@ -56,7 +56,7 @@ A modern and user-friendly **Expense & Income Tracking** application built using
 
 ```
 expense-tracker-main/
-├── expense-tracker-backend/
+├── expense-tracker-backend/ # Backend codebase
 │   ├── controllers/
 │   │   ├── authControllers.js
 │   │   └── profileController.js
@@ -74,44 +74,44 @@ expense-tracker-main/
 │   ├── utils/
 │   │   └── sendEmail.js
 │   ├── .env                 # Contains MONGO_URI, JWT_SECRET, Email/Frontend URLs
-│   ├── package.json         # Backend dependencies and scripts
+│   ├── package.json         
 │   └── server.js            # Main backend server file
 │
-└── expense-tracker-frontend/
-    ├── src/
-    │   ├── api/
-    │   │   └── api.js      # Axios instance for API calls
-    │   ├── components/
-    │   │   ├── CalendarSelector.js    
-    │   │   ├── ExpenseChart.js
-    │   │   ├── ExpenseForm.js
-    │   │   ├── ExpenseLineChart.js
-    │   │   ├── ExpenseList.js
-    │   │   ├── IncomeList.js
-    │   │   └── component.css      # Shared CSS for components (including modal styles)
-    │   ├── pages/
-    │   │   ├── AdminDashboard.js
-    │   │   ├── AllExpenses.js
-    │   │   ├── ChangePassword.js
-    │   │   ├── Dashboard.js
-    │   │   ├── ForgotPassword.js
-    │   │   ├── Landing.js
-    │   │   ├── Login.js
-    │   │   ├── Profile.js
-    │   │   ├── Register.js
-    │   │   ├── ResetPassword.js
-    │   │   ├── UpdateProfile.js
-    │   │   ├── UserManagement.js
-    │   │   ├── Admin.css
-    │   │   ├── dashboard.css
-    │   │   ├── Landing.css
-    │   │   ├── Login.css
-    │   │   ├── ProfileAuthForms.css
-    │   │   └── Register.css
-    │   ├── App.js             # Main React application component     
-    │   └── App.css            # Global app styles
-    ├── README.md
-    └── package.json         # Frontend dependencies and scripts
+├── expense-tracker-frontend/ # Frontend codebase
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── api.js      # Axios instance for API calls
+│   │   ├── components/
+│   │   │   ├── CalendarSelector.js    
+│   │   │   ├── ExpenseChart.js
+│   │   │   ├── ExpenseForm.js
+│   │   │   ├── ExpenseLineChart.js
+│   │   │   ├── ExpenseList.js
+│   │   │   ├── IncomeList.js
+│   │   │   └── component.css      
+│   │   ├── pages/
+│   │   │   ├── AdminDashboard.js
+│   │   │   ├── AllExpenses.js
+│   │   │   ├── ChangePassword.js
+│   │   │   ├── Dashboard.js
+│   │   │   ├── ForgotPassword.js
+│   │   │   ├── Landing.js
+│   │   │   ├── Login.js
+│   │   │   ├── Profile.js
+│   │   │   ├── Register.js
+│   │   │   ├── ResetPassword.js
+│   │   │   ├── UpdateProfile.js
+│   │   │   ├── UserManagement.js
+│   │   │   ├── Admin.css
+│   │   │   ├── dashboard.css
+│   │   │   ├── Landing.css
+│   │   │   ├── Login.css
+│   │   │   ├── ProfileAuthForms.css
+│   │   │   └── Register.css
+│   │   ├── App.js             # Main React application component     
+│   │   └── App.css 
+│   └── package.json           
+└── README.md            
 ```
 
 ---
