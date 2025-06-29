@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const expenseRoutes = require('./routes/expenses');
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const userRoutes = require('./routes/userRoutes'); // NEW: Import user profile routes
 
 const app = express();
 
@@ -10,9 +13,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Use expense routes
+// Use application routes
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/users', userRoutes); // NEW: Mount user profile routes here
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -23,7 +28,6 @@ mongoose.connect(process.env.MONGO_URI, {
 }).catch(err => {
     console.error('MongoDB connection error:', err);
 });
-
 
 // Start Server
 const PORT = process.env.PORT || 5000;

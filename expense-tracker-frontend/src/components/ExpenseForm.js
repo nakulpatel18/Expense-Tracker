@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import './component.css';
+
 
 const ExpenseForm = ({ onSubmit, selectedDate, editingItem, clearEdit }) => {
     const [title, setTitle] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [customCategory, setCustomCategory] = useState('');
-    const [type, setType] = useState('expense'); // Default to expense for new entries
+    const [type, setType] = useState('expense'); 
     const [date, setDate] = useState(selectedDate);
 
     const expenseCategories = ['Food', 'Travel', 'Shopping', 'Bills', 'SIP', 'Auto', 'Entertainment', 'Health', 'General', 'Other'];

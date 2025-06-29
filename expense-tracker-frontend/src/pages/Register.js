@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/api';
 import './Register.css';
 import { Link } from 'react-router-dom';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-const Register = ({ setIsLoggedIn }) => {
+const Register = ({ setIsLoggedIn, setUserRole, onSuccess, switchToLogin }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -29,16 +29,29 @@ const Register = ({ setIsLoggedIn }) => {
             setMessage('Passwords do not match.');
             return;
         }
+        if (formData.password.length < 6) {
+            setMessage('Password must be at least 6 characters long.');
+            return;
+        }
 
         try {
             const { name, email, password } = formData;
-            const res = await axios.post('/api/auth/register', { name, email, password });
+            const res = await api.post('/auth/register', { name, email, password });
             setMessage('Registration successful!');
 
             if (res.status === 200) {
                 localStorage.setItem('token', res.data.token);
+                localStorage.setItem('userRole', res.data.data.role);
+                localStorage.setItem('userId', res.data.data.id);
+
                 setIsLoggedIn(true);
-                navigate('/');
+                setUserRole(res.data.data.role);
+
+                if (onSuccess) {
+                    onSuccess(); // close modal + redirect
+                } else {
+                    navigate('/');
+                }
             }
         } catch (err) {
             setMessage(err.response?.data?.message || 'Registration failed.');
@@ -54,6 +67,7 @@ const Register = ({ setIsLoggedIn }) => {
                     type="text"
                     name="name"
                     placeholder="Name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                 />
@@ -61,6 +75,7 @@ const Register = ({ setIsLoggedIn }) => {
                     type="email"
                     name="email"
                     placeholder="Email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
                 />
@@ -70,6 +85,7 @@ const Register = ({ setIsLoggedIn }) => {
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         placeholder="Password"
+                        value={formData.password}
                         onChange={handleChange}
                         required
                     />
@@ -83,22 +99,25 @@ const Register = ({ setIsLoggedIn }) => {
                         type={showConfirmPassword ? 'text' : 'password'}
                         name="confirmPassword"
                         placeholder="Confirm Password"
+                        value={formData.confirmPassword}
                         onChange={handleChange}
                         required
                     />
-                    <span className="toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)} >
-                        {showConfirmPassword ? (
-                            <MdVisibility size={22} />
-                        ) : (
-                            <MdVisibilityOff size={22} />
-                        )}
+                    <span className="toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                        {showConfirmPassword ? <MdVisibility size={22} /> : <MdVisibilityOff size={22} />}
                     </span>
                 </div>
 
                 <button type="submit">Register</button>
 
                 <p className="footer">
-                    Already have an account? <Link to="/login">Login</Link>
+                    Already have an account?{' '}
+                    <span
+                        style={{ color: 'skyblue', cursor: 'pointer' }}
+                        onClick={switchToLogin}
+                    >
+                        Login
+                    </span>
                 </p>
 
                 {message && <p className="message">{message}</p>}

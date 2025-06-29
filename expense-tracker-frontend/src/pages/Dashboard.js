@@ -5,13 +5,15 @@ import ExpenseForm from '../components/ExpenseForm';
 import ExpenseList from '../components/ExpenseList';
 import IncomeList from '../components/IncomeList';
 import ExpenseChart from '../components/ExpenseChart';
-import '../App.css';
+import ExpenseLineChart from '../components/ExpenseLineChart';
+import './dashboard.css';
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [activeMonthDate, setActiveMonthDate] = useState(new Date());
     const [editingItem, setEditingItem] = useState(null);
+    const [highlightedDates, setHighlightedDates] = useState([]);
     const formRef = useRef(null);
 
     const fetchExpenses = async () => {
@@ -20,7 +22,6 @@ function Dashboard() {
             setExpenses(res.data);
         } catch (err) {
             console.error('Error fetching expenses:', err);
-            // Handle unauthorized errors by redirecting to login
             if (err.response && err.response.status === 401) {
                 localStorage.removeItem('token');
                 window.location.href = '/login';
@@ -31,6 +32,21 @@ function Dashboard() {
     useEffect(() => {
         fetchExpenses();
     }, []);
+
+    useEffect(() => {
+    const datesWithTransactions = new Set();
+    expenses.forEach((t) => {
+        const localDate = new Date(t.date);
+        const year = localDate.getFullYear();
+        const month = String(localDate.getMonth() + 1).padStart(2, '0');
+        const day = String(localDate.getDate()).padStart(2, '0');
+        const localDateStr = `${year}-${month}-${day}`;
+        datesWithTransactions.add(localDateStr);
+    });
+    setHighlightedDates(Array.from(datesWithTransactions));
+}, [expenses]);
+
+
 
     const addOrUpdateExpense = async (data) => {
         if (editingItem) {
@@ -45,6 +61,7 @@ function Dashboard() {
             try {
                 const res = await api.post('/expenses', data);
                 setExpenses([...expenses, res.data]);
+                console.log(res);
             } catch (err) {
                 console.error('Error adding expense:', err);
             }
@@ -115,15 +132,18 @@ function Dashboard() {
         return Object.entries(data).map(([category, amount]) => ({ category, amount }));
     };
 
+    const balance = monthlySummary('income') - monthlySummary('expense');
+
     return (
         <div>
             <div className="dashboard-container">
-                {/* Left Panel: Calendar */}
+                {/* Left Panel: Calendar & Form */}
                 <div className="left-panel">
                     <CalendarSelector
                         selectedDate={selectedDate}
                         setSelectedDate={setSelectedDate}
                         setActiveMonthDate={setActiveMonthDate}
+                        highlightedDates={highlightedDates}
                     />
                     <div ref={formRef}>
                         <ExpenseForm
@@ -135,20 +155,40 @@ function Dashboard() {
                     </div>
                 </div>
 
+                {/* Right Panel: Lists, Summary, Chart */}
                 <div className="right-panel">
                     <div className="lists">
-                        <ExpenseList expenses={filterByTypeAndDate('expense')} onEdit={startEditing} onDelete={deleteExpense} />
-                        <IncomeList incomes={filterByTypeAndDate('income')} onEdit={startEditing} onDelete={deleteExpense} />
+                        <ExpenseList
+                            expenses={filterByTypeAndDate('expense')}
+                            onEdit={startEditing}
+                            onDelete={deleteExpense}
+                        />
+                        <IncomeList
+                            incomes={filterByTypeAndDate('income')}
+                            onEdit={startEditing}
+                            onDelete={deleteExpense}
+                        />
                     </div>
-                    {/* Right Panel: Lists, Summary, Chart */}
                     <div className="summary-wrapper">
                         <div className="summary">
                             <div>Total Income (Monthly): ₹{monthlySummary('income')}</div>
                             <div>Total Expense (Monthly): ₹{monthlySummary('expense')}</div>
+                            <div>
+                                Balance:{' '}
+                                <span style={{ color: balance >= 0 ? 'green' : 'red' }}>
+                                    ₹{balance}
+                                </span>
+                            </div>
                         </div>
                     </div>
-
-                    <ExpenseChart chartData={chartData()} />
+                    <div className="charts-container">
+                        <div className="chart-box">
+                            <ExpenseChart chartData={chartData()} />
+                        </div>
+                        <div className="chart-box">
+                            <ExpenseLineChart expenses={expenses} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,6 +196,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-
-
