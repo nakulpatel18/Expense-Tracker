@@ -1,17 +1,17 @@
 .dashboard-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    max-width: 1200px;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    max-width: 1200px; 
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 20px; 
     align-items: flex-start;
     flex-grow: 1;
 }
 
 .left-panel {
     flex: 1;
-    min-width: 380px;
+    min-width: 380px; 
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -19,7 +19,7 @@
 
 .right-panel {
     flex: 2;
-    min-width: 500px;
+    min-width: 500px; 
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -29,7 +29,7 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allows lists to wrap below each other */
     margin: 0;
 }
 
@@ -37,7 +37,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    padding: 12px 20px;
+    padding: 12px 20px; 
     margin-top: 10px;
 }
 
@@ -47,22 +47,99 @@
     font-weight: bold;
     font-size: 1rem;
     color: #2f3542;
+    flex-wrap: wrap; 
+    gap: 10px; 
 }
 
 .charts-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: flex-start; 
     gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto 40px auto;
-    flex-wrap: wrap;
+    max-width: 100%; 
+    margin: 0 auto 40px auto; 
+    padding: 0 10px; 
+    box-sizing: border-box; 
+    flex-wrap: wrap; 
 }
 
 .chart-box {
-    flex: 1;
-    min-width: 300px;
+    flex: 1; 
+    min-width: 300px; 
     background-color: white;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+@media (max-width: 992px) { /* Tablet breakpoint */
+    .left-panel {
+        min-width: 300px;
+    }
+
+    .right-panel {
+        min-width: 400px;
+    }
+}
+
+@media (max-width: 768px) { /* Mobile breakpoint */
+    .dashboard-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .left-panel, .right-panel {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .summary-wrapper {
+        padding: 10px 15px;
+    }
+
+    .summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .charts-container {
+        flex-direction: column; /* Stack chart boxes vertically */
+        gap: 15px;
+        max-width: 100%;
+        margin: 0 auto 20px auto;
+        padding: 0; 
+    }
+
+    .chart-box {
+        min-width: unset;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .lists {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) { /* Smaller mobile screens */
+    .dashboard-container {
+        padding: 0 10px;
+    }
+
+    .summary-wrapper {
+        padding: 8px 10px;
+    }
+
+    .summary span {
+        font-size: 0.9rem;
+    }
+
+    .chart-box {
+        padding: 10px;
+    }
 }

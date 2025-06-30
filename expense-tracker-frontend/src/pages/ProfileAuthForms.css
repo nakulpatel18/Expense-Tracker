@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 150px);
-    padding: 20px;
+    padding: 20px; 
 }
 
 .auth-form-card { 
@@ -12,7 +12,7 @@
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 400px; 
     text-align: center;
     border: 1px solid #ddd;
 }
@@ -121,7 +121,7 @@
     color: #dc3545; 
 }
 
-/* Specific styling for Forgot Password link if it's separate */
+/* Specific styling for Forgot Password link */
 .auth-form-card .forgot-password-link {
     color: #4f46e5;
     text-decoration: none;
@@ -159,4 +159,49 @@
 
 .profile-actions .profile-action-button:hover {
     background-color: #4338ca;
+}
+
+@media (max-width: 600px) {
+    .form-container-wrapper {
+        padding: 15px; 
+        min-height: unset; 
+    }
+
+    .auth-form-card {
+        padding: 30px; 
+        max-width: 100%; 
+    }
+
+    .auth-form-card h2 {
+        font-size: 1.8rem; 
+        margin-bottom: 20px;
+    }
+
+    .auth-form-card input {
+        padding: 10px; 
+    }
+
+    .auth-form-card button[type="submit"] {
+        padding: 12px; 
+        font-size: 1rem;
+    }
+
+    .auth-form-card .forgot-password-link,
+    .auth-form-card .link-button {
+        font-size: 0.85rem;
+    }
+
+    .profile-details p {
+        font-size: 1rem;
+    }
+
+    .profile-actions .profile-action-button {
+        padding: 10px; 
+    }
+}
+
+@media (max-width: 400px) {
+    .auth-form-card {
+        padding: 20px; 
+    }
 }

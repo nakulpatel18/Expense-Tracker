@@ -3,18 +3,18 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 150px); 
-    padding: 20px;
+    padding: 20px; 
 }
 
 .login-form {
-    background-color: white;
+    background-color: white; 
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 400px; 
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; 
 }
 
 .login-form h2 {
@@ -126,4 +126,39 @@
     color: #28a745; /* Green for success */
 }
 
+@media (max-width: 600px) {
+    .login-container {
+        padding: 15px; 
+        min-height: unset; 
+    }
 
+    .login-form {
+        padding: 30px; 
+        max-width: 100%;
+    }
+
+    .login-form h2 {
+        font-size: 1.8rem; 
+        margin-bottom: 20px;
+    }
+
+    .login-form input {
+        padding: 10px; 
+    }
+
+    .login-form button[type="submit"] {
+        padding: 12px; 
+        font-size: 1rem;
+    }
+
+    .login-form .footer,
+    .forgot-password-link {
+        font-size: 0.85rem; 
+    }
+}
+
+@media (max-width: 400px) {
+    .login-form {
+        padding: 20px; 
+    }
+}

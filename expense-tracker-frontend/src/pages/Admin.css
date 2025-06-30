@@ -1,5 +1,5 @@
 .admin-container {
-    max-width: 1200px;
+    max-width: 1200px; 
     margin: 20px auto;
     padding: 20px;
     background-color: #f3f4f6; 
@@ -25,7 +25,7 @@
     background-color: #ffffff; 
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 25px; 
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -64,24 +64,24 @@
 
 /* Admin Table Styles */
 .admin-table-wrapper {
-    overflow-x: auto;
+    overflow-x: auto; /* Ensures horizontal scrolling for narrow tables */
     margin-top: 20px;
     background-color: #ffffff; 
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 20px; 
 }
 
 .admin-table-wrapper table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    min-width: 600px; 
+    min-width: 600px; /* Ensures table columns don't shrink too much, enables scroll */
 }
 
 .admin-table-wrapper th,
 .admin-table-wrapper td {
-    padding: 12px 15px;
+    padding: 12px 15px; 
     text-align: left;
     border-bottom: 1px solid #ddd;
     color: #2f3542;
@@ -149,4 +149,54 @@
     color: #6b7280;
     font-size: 0.85rem;
     margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 15px; 
+        margin: 15px auto; 
+    }
+
+    .admin-card {
+        padding: 20px; 
+    }
+
+    .admin-link-button {
+        padding: 8px 15px;
+    }
+
+    .admin-table-wrapper {
+        padding: 15px; 
+    }
+
+    .admin-table-wrapper th,
+    .admin-table-wrapper td {
+        padding: 10px 12px; 
+    }
+
+    .admin-action-button, .button-confirm, .button-cancel, .ex-button-delete {
+        padding: 7px 10px;
+        font-size: 0.8rem; 
+        margin-right: 3px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        padding: 10px; 
+        margin: 10px auto;
+    }
+
+    .admin-card {
+        padding: 15px; 
+    }
+
+    .admin-table-wrapper table {
+        min-width: 500px; 
+    }
+
+    .admin-table-wrapper th,
+    .admin-table-wrapper td {
+        padding: 8px 10px; 
+    }
 }

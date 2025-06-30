@@ -25,7 +25,7 @@ h2 {
 
 .app-content {
     flex: 1;
-    padding: 2rem;
+    padding: 2rem; 
     background-color: #f1f2f6;
 }
 
@@ -60,8 +60,6 @@ h2 {
     flex-shrink: 0;
 }
 
-
-
 .app-header nav.main-nav {
     display: flex;
     justify-content: center;
@@ -69,7 +67,7 @@ h2 {
     width: 100%;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 0 1.5rem;
+    padding: 0 1.5rem; 
     position: relative; 
 }
 
@@ -79,34 +77,57 @@ h2 {
     align-items: center;
     gap: 1.5rem;
     flex: 1;
+    flex-wrap: wrap; 
 }
 
 .app-header nav.main-nav .auth-links {
     display: flex;
     align-items: center;
     gap: 1rem;
-    position: absolute;
+    position: absolute; 
     right: 1.5rem;
 }
 
 @media (max-width: 768px) {
+    .app-content {
+        padding: 1rem;
+    }
+
+    .app-header h1 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+
     .app-header nav.main-nav {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; 
+        align-items: flex-start; 
         gap: 1rem;
+        padding: 0 1rem;
+        position: static; 
     }
 
     .app-header nav.main-nav .main-links {
         width: 100%;
-        justify-content: center;
+        justify-content: center; 
         order: 1;
         padding: 0;
+        gap: 0.8rem; 
     }
 
     .app-header nav.main-nav .auth-links {
         width: 100%;
-        justify-content: flex-end;
+        justify-content: center; 
         order: 2;
+        margin-left: 0;
+        position: static; 
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .app-header a,
+    .app-header button {
+        font-size: 0.9rem;
+        padding: 6px 10px;
     }
 }
 
@@ -159,7 +180,7 @@ h2 {
     background: rgba(255, 255, 255, 0.12);
     padding: 1.2rem;
     border-radius: 20px;
-    width: 460px;
+    width: 460px; /* Default width for larger screens */
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -173,6 +194,7 @@ h2 {
     display: none;
 }
 
+/* Specific modal heights */
 .modal-login {
     max-height: 600px;
 }
@@ -180,4 +202,19 @@ h2 {
 .modal-register {
     max-height: 90vh;
     overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; 
+        padding: 1rem; 
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .modal-content {
+        width: 95%;
+        padding: 0.8rem;
+    }
 }
