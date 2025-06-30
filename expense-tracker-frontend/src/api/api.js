@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: '/api', // Adjust this if your backend is on a different URL
+    baseURL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api', // Fallback for local dev
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 // Add a request interceptor to add the auth token to every request
